@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { AlertifyService } from '../shared/alertify.service';
 import { BankAccountService } from '../shared/bank-account.service';
 import { BankService } from '../shared/bank.service';
 
@@ -14,9 +16,13 @@ export class BankAccountComponent implements OnInit {
   bankList = [];
   notification = null;
 
-  constructor(private fb: FormBuilder,
-    private bankService: BankService,
-    private service: BankAccountService) { }
+  constructor(
+      private fb: FormBuilder,
+      private bankService: BankService,
+      private service: BankAccountService,
+      // private alertyfy: AlertifyService
+      private toastr: ToastrService
+    ) { }
 
   ngOnInit(): void {
     this.bankService.getBankList().subscribe(res=>this.bankList = res as []);
@@ -33,7 +39,7 @@ export class BankAccountComponent implements OnInit {
               bankAccountId: [bankAccount.bankAccountId],
               accountNumber: [bankAccount.accountNumber, Validators.required],
               accountHolder: [bankAccount.accountHolder, Validators.required],
-              bankID: [bankAccount.bankAccountId, Validators.min(1)],
+              bankID: [bankAccount.bankId, Validators.min(1)],
               IFSC: [bankAccount.ifsc, Validators.required]
             }))
           })
@@ -84,20 +90,38 @@ export class BankAccountComponent implements OnInit {
     }
   }
 
+  // showNotification(category){
+  //   switch (category) {
+  //     case 'insert':
+  //       this.notification = {class: 'text-success', message: 'saved!'}
+  //       break;
+  //     case 'udpate':
+  //       this.notification = {class: 'text-primary', message: 'updated!'}
+  //       break;
+  //     case 'delete':
+  //       this.notification = {class: 'text-danger', message: 'deleted!'}
+  //       break;
+
+  //     default:
+  //       break;
+  //   }
+  // }
+
   showNotification(category){
     switch (category) {
       case 'insert':
-        this.notification = {class: 'text-success', message: 'saved!'}
+        this.notification = this.toastr.success('Record successfully added');
         break;
       case 'udpate':
-        this.notification = {class: 'text-primary', message: 'updated!'}
+        this.notification = this.toastr.success('Record successfully updated');
         break;
       case 'delete':
-        this.notification = {class: 'text-danger', message: 'deleted!'}
+        this.notification = this.toastr.error('Record successfully deleted');
         break;
 
       default:
         break;
     }
   }
+
 }

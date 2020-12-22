@@ -1,6 +1,6 @@
 <blockquote class="blockquote ml-5">
   <h2>Bank Accounts</h2>
-  <footer class="blockquote-footer">
+  <footer class="blockquote-footer mt-2">
     Using inline table editing with Angular 8 and ASP.Net Core
   </footer>
 </blockquote>
@@ -26,7 +26,8 @@
     </div>
   </div>
   <div class="tbody">
-    <form [formGroup]="fg" *ngFor="let fg of bankAccountForms.controls; let i=index" class="tr" (submit)="recordSubmit(fg)">
+    <form [formGroup]="fg" *ngFor="let fg of bankAccountForms.controls; let i=index" class="tr"
+      (submit)="recordSubmit(fg)">
       <div class="td">
         <input class="form-control" formControlName="accountNumber">
       </div>
